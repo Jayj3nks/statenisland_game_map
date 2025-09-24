@@ -7,3 +7,7 @@ game_tiles_topographic/terrain_grid.npy
 staten_island_osm/buildings.geojson
 # Keep compressed versions
 !*_compressed/*.gz
+-e 
+# Environment files
+*.env
+*.env.*
