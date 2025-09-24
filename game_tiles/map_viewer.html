@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Massive 2D Staten Island Map Viewer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #00ff00;
+            overflow-x: auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+            margin: 0;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        .stat-card h3 {
+            margin: 0 0 10px 0;
+            color: #ffff00;
+        }
+        
+        .legend {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border: 1px solid #00ffff;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .legend h3 {
+            color: #00ffff;
+            margin: 0 0 15px 0;
+        }
+        
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .color-box {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #fff;
+        }
+        
+        .map-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .map-grid {
+            display: inline-grid;
+            gap: 1px;
+            background: #333;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #00ffff;
+            max-width: 100%;
+            overflow: auto;
+        }
+        
+        .tile-img {
+            width: 32px;
+            height: 32px;
+            display: block;
+            image-rendering: pixelated;
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .btn {
+            background: #001133;
+            color: #00ffff;
+            border: 1px solid #00ffff;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+        
+        .btn:hover {
+            background: #003366;
+            box-shadow: 0 0 10px #00ffff;
+        }
+        
+        .info {
+            background: rgba(255, 255, 0, 0.1);
+            border: 1px solid #ffff00;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        .usage-guide {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 30px;
+        }
+        
+        .usage-guide h3 {
+            color: #00ffff;
+            margin: 0 0 15px 0;
+        }
+        
+        .file-list {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .file-list code {
+            color: #00ff00;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎮 MASSIVE 2D STATEN ISLAND MAP 🎮</h1>
+        <p>Generated for Low-Poly Game Development</p>
+    </div>
+    
+    <div class="stats">
+        <div class="stat-card">
+            <h3>📐 Map Specifications</h3>
+            <p><strong>Grid Size:</strong> 5,783 × 6,757 cells</p>
+            <p><strong>Real Size:</strong> 28.9km × 33.8km</p>
+            <p><strong>Resolution:</strong> 5m per cell</p>
+            <p><strong>Total Area:</strong> 976.9 km²</p>
+            <p><strong>Total Cells:</strong> 39,075,731</p>
+        </div>
+        
+        <div class="stat-card">
+            <h3>🎨 Terrain Distribution</h3>
+            <p><strong>Empty/Ocean:</strong> 45.3% (17,683,264 cells)</p>
+            <p><strong>Water Bodies:</strong> 35.7% (13,937,331 cells)</p>
+            <p><strong>Land Areas:</strong> 9.9% (3,870,835 cells)</p>
+            <p><strong>Parks/Green:</strong> 4.7% (1,831,363 cells)</p>
+            <p><strong>Buildings:</strong> 3.5% (1,350,620 cells)</p>
+            <p><strong>Roads:</strong> 1.0% (393,200 cells)</p>
+            <p><strong>Retail:</strong> 0.0% (9,118 cells)</p>
+        </div>
+        
+        <div class="stat-card">
+            <h3>🚀 Game Development Ready</h3>
+            <p><strong>PNG Tiles:</strong> 621 tiles (256×256 each)</p>
+            <p><strong>Road Network:</strong> 14,449 nodes, 19,544 edges</p>
+            <p><strong>Format:</strong> JSON + CSV + NPY</p>
+            <p><strong>Engine Support:</strong> Unity, Godot, Custom</p>
+            <p><strong>AI Ready:</strong> Navigation graph included</p>
+            <p><strong>Asset Placement:</strong> Fully supported</p>
+        </div>
+    </div>
+    
+    <div class="legend">
+        <h3>🎨 Terrain Legend</h3>
+        <div class="legend-grid">
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #001133;"></div>
+                <span>Empty/Ocean</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #707070;"></div>
+                <span>Roads (Gray)</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #228B22;"></div>
+                <span>Parks (Green)</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #4682B4;"></div>
+                <span>Water (Blue)</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #A9A9A9;"></div>
+                <span>Buildings (Gray)</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #FF8C00;"></div>
+                <span>Retail (Orange)</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #D2B48C;"></div>
+                <span>Land (Tan/Beige)</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="info">
+        <h3>⚡ Performance Note</h3>
+        <p>This map contains <strong>39+ million cells</strong> spread across <strong>621 tiles</strong>. 
+        The PNG tiles are optimized for game engines and can be loaded on-demand for performance. 
+        Each tile represents a 1.28km × 1.28km real-world area.</p>
+    </div>
+    
+    <div class="controls">
+        <button class="btn" onclick="showSampleTiles()">Show Sample Tiles</button>
+        <button class="btn" onclick="downloadFiles()">Download Instructions</button>
+        <button class="btn" onclick="showUsage()">Game Engine Usage</button>
+    </div>
+    
+    <div id="sample-tiles" class="map-container" style="display: none;">
+        <h3 style="color: #00ffff;">🖼️ Sample Tiles Preview</h3>
+        <p>Showing a small sample of the 621 generated tiles:</p>
+        <div id="tiles-grid" class="map-grid"></div>
+    </div>
+    
+    <div class="usage-guide">
+        <h3>🔧 Usage in Game Engines</h3>
+        
+        <h4 style="color: #ffff00;">Unity Integration:</h4>
+        <div class="file-list">
+            <p>1. Import PNG tiles from <code>tiles/</code> folder</p>
+            <p>2. Load <code>metadata.json</code> for world coordinates</p>
+            <p>3. Use <code>road_network.json</code> for AI pathfinding</p>
+            <p>4. Each tile = 1.28km × 1.28km (256 cells × 5m each)</p>
+        </div>
+        
+        <h4 style="color: #ffff00;">Godot Integration:</h4>
+        <div class="file-list">
+            <p>1. Create TileSet resource from PNG tiles</p>
+            <p>2. Parse <code>tilemap.csv</code> for procedural generation</p>
+            <p>3. Import <code>grid_uint8.npy</code> using NumPy-compatible tools</p>
+        </div>
+        
+        <h4 style="color: #ffff00;">Custom Engine Integration:</h4>
+        <div class="file-list">
+            <p>1. Load tiles on-demand based on player position</p>
+            <p>2. Use 5m cell resolution for collision detection</p>
+            <p>3. Implement streaming system for performance</p>
+            <p>4. Place procedural assets on appropriate terrain types</p>
+        </div>
+        
+        <h4 style="color: #ffff00;">Generated Files:</h4>
+        <div class="file-list">
+            <p><code>grid_uint8.npy</code> - Master grid (37 MB) for direct access</p>
+            <p><code>metadata.json</code> - Configuration and world bounds</p>
+            <p><code>tilemap.csv</code> - Human-readable grid data (75 MB)</p>
+            <p><code>tiles/*.png</code> - 621 visual tiles for rendering</p>
+            <p><code>road_network.json</code> - AI navigation graph (3 MB)</p>
+        </div>
+    </div>
+    
+    <script>
+        function showSampleTiles() {
+            const container = document.getElementById('sample-tiles');
+            const grid = document.getElementById('tiles-grid');
+            
+            if (container.style.display === 'none') {
+                container.style.display = 'block';
+                
+                // Show a 5x5 sample grid of tiles
+                grid.style.gridTemplateColumns = 'repeat(5, 32px)';
+                grid.innerHTML = '';
+                
+                for (let y = 0; y < 5; y++) {
+                    for (let x = 0; x < 5; x++) {
+                        const img = document.createElement('img');
+                        img.className = 'tile-img';
+                        img.src = `tiles/tile_${String(y * 5).padStart(3, '0')}_${String(x * 5).padStart(3, '0')}.png`;
+                        img.alt = `Tile ${y}_${x}`;
+                        img.onerror = () => {
+                            img.style.background = '#333';
+                            img.alt = 'No tile';
+                        };
+                        grid.appendChild(img);
+                    }
+                }
+            } else {
+                container.style.display = 'none';
+            }
+        }
+        
+        function downloadFiles() {
+            alert('Files are available in the /app/game_tiles/ directory:\n\n' +
+                  '• grid_uint8.npy (37 MB)\n' +
+                  '• metadata.json\n' +
+                  '• tilemap.csv (75 MB)\n' +
+                  '• tiles/ folder (621 PNG files)\n' +
+                  '• road_network.json (3 MB)\n\n' +
+                  'Use these files in your game engine project!');
+        }
+        
+        function showUsage() {
+            alert('🎮 Game Development Usage:\n\n' +
+                  '1. Load tiles on-demand for performance\n' +
+                  '2. Use 5m resolution for collision\n' +
+                  '3. Stream tiles based on player position\n' +
+                  '4. Place assets on correct terrain types\n' +
+                  '5. Use road network for AI navigation\n\n' +
+                  'Each tile covers 1.28km × 1.28km of real Staten Island!');
+        }
+        
+        // Add some ambient animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const title = document.querySelector('h1');
+            setInterval(() => {
+                title.style.textShadow = title.style.textShadow === '0 0 20px #00ffff' 
+                    ? '0 0 10px #00ffff' 
+                    : '0 0 20px #00ffff';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
