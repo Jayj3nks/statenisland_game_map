@@ -1,0 +1,89 @@
+{
+  "cell_meters": 5.0,
+  "classes": {
+    "0": "empty/ocean",
+    "1": "road",
+    "2": "park",
+    "3": "water",
+    "4": "building",
+    "5": "retail",
+    "6": "land"
+  },
+  "colors": {
+    "0": "#001133",
+    "1": "#707070",
+    "2": "#228B22",
+    "3": "#4682B4",
+    "4": "#A9A9A9",
+    "5": "#FF8C00",
+    "6": "#D2B48C"
+  },
+  "transform": {
+    "xmin": 560795.0,
+    "ymax": 4506875.0,
+    "cell": 5.0,
+    "crs": "EPSG:32618"
+  },
+  "grid_size": [
+    6757,
+    5783
+  ],
+  "tile_size": 256,
+  "real_world_size_km": {
+    "width": 28.9,
+    "height": 33.8
+  },
+  "tile_counts": {
+    "0": 17683264,
+    "1": 393200,
+    "2": 1831363,
+    "3": 13937331,
+    "4": 1350620,
+    "5": 9118,
+    "6": 3870835
+  },
+  "total_cells": 39075731,
+  "version": "2.0-topographic",
+  "description": "Enhanced Staten Island map with elevation-based topographic coloring",
+  "elevation": {
+    "available": true,
+    "source_points": 76,
+    "range_meters": [
+      0.0,
+      45.72120666503906
+    ],
+    "zones": [
+      {
+        "range": "0-10m",
+        "description": "Sea level",
+        "color_hint": "Deep blue"
+      },
+      {
+        "range": "10-25m",
+        "description": "Low land",
+        "color_hint": "Green tones"
+      },
+      {
+        "range": "25-40m",
+        "description": "Mid elevation",
+        "color_hint": "Yellow-brown"
+      },
+      {
+        "range": "40-60m",
+        "description": "Higher land",
+        "color_hint": "Orange-brown"
+      },
+      {
+        "range": "60m+",
+        "description": "Hills/peaks",
+        "color_hint": "Red-brown"
+      }
+    ]
+  },
+  "enhancements": {
+    "topographic_coloring": true,
+    "elevation_blended_terrain": true,
+    "backward_compatible": true,
+    "original_terrain_preserved": true
+  }
+}

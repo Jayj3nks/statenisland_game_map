@@ -1,0 +1,9 @@
+# Large files - use compressed versions only
+*.npy
+game_tiles/grid_uint8.npy
+game_tiles/tilemap.csv
+game_tiles_topographic/elevation_grid.npy
+game_tiles_topographic/terrain_grid.npy
+staten_island_osm/buildings.geojson
+# Keep compressed versions
+!*_compressed/*.gz
