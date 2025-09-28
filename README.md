@@ -67,7 +67,7 @@ This will extract the compressed map data (~670MB total) for use in your game en
 
 ### 1. Clone & Extract
 ```bash
-git clone https://github.com/Jayj3nks/statenisland_game_map.git
+git clone https://github.com/Jayj3nks/statenisland_game_map/tree/side2.0.git
 cd staten-island-map
 
 # IMPORTANT: Extract compressed files first!
