@@ -354,14 +354,25 @@
             // Show loading indicator
             document.getElementById('loading').style.display = 'block';
             
-            // Create map with custom CRS for pixel coordinates
+            // Create custom CRS for your tile system
+            const customCRS = L.extend({}, L.CRS.Simple, {
+                transformation: new L.Transformation(1, 0, -1, CONFIG.tileBounds.maxY * 256)
+            });
+            
+            // Create map with custom bounds
             map = L.map('map', {
-                center: CONFIG.center,
-                zoom: 10,
-                minZoom: 8,
-                maxZoom: 16,
+                crs: customCRS,
+                center: [13 * 256, 11 * 256], // Center of your tile grid
+                zoom: 2,
+                minZoom: 0,
+                maxZoom: 6,
                 zoomControl: true,
-                attributionControl: true
+                attributionControl: true,
+                maxBounds: [
+                    [0, 0],
+                    [(CONFIG.tileBounds.maxY + 1) * 256, (CONFIG.tileBounds.maxX + 1) * 256]
+                ],
+                maxBoundsViscosity: 1.0
             });
             
             // Add custom attribution
@@ -376,7 +387,7 @@
             // Hide loading indicator
             setTimeout(() => {
                 document.getElementById('loading').style.display = 'none';
-            }, 1000);
+            }, 2000);
         }
         
         function loadTileLayer(version) {
