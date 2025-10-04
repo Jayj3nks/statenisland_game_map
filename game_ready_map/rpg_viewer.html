@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Staten Island - Pokémon Emerald Style RPG Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow: hidden;
+        }
+        
+        .game-container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .viewport {
+            position: relative;
+            background: #000;
+            border: 4px solid #333;
+            overflow: hidden;
+        }
+        
+        .map-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            cursor: grab;
+        }
+        
+        .map-canvas:active {
+            cursor: grabbing;
+        }
+        
+        .player-sprite {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: #FF6B6B;
+            border: 1px solid #FF4757;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .player-sprite::after {
+            content: "👤";
+            position: absolute;
+            top: -2px;
+            left: 1px;
+            font-size: 12px;
+        }
+        
+        .ui-panel {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-left: 4px solid #0f4c75;
+            padding: 20px;
+            width: 300px;
+            overflow-y: auto;
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        .control-group label {
+            display: block;
+            color: #64dfdf;
+            margin-bottom: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .slider, select, button {
+            width: 100%;
+            padding: 8px;
+            background: #0f3460;
+            border: 1px solid #16537e;
+            color: #ffffff;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 11px;
+        }
+        
+        .slider {
+            height: 6px;
+            padding: 0;
+        }
+        
+        button {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        button:hover {
+            background: #16537e;
+        }
+        
+        .info-display {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #333;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 10px;
+        }
+        
+        .stat-item {
+            background: rgba(100, 223, 223, 0.1);
+            padding: 5px;
+            border-radius: 3px;
+            text-align: center;
+        }
+        
+        .minimap {
+            width: 200px;
+            height: 150px;
+            border: 2px solid #333;
+            background: #000;
+            position: relative;
+            margin-bottom: 15px;
+        }
+        
+        .minimap-canvas {
+            width: 100%;
+            height: 100%;
+            image-rendering: pixelated;
+        }
+        
+        .viewport-indicator {
+            position: absolute;
+            border: 2px solid #FF6B6B;
+            background: rgba(255, 107, 107, 0.2);
+            pointer-events: none;
+        }
+        
+        .legend {
+            font-size: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            margin-right: 8px;
+            border: 1px solid #666;
+        }
+        
+        .title {
+            text-align: center;
+            color: #64dfdf;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        .loading {
+            animation: pulse 1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Main viewport (like Game Boy Advance screen) -->
+        <div class="viewport" id="viewport" style="width: 640px; height: 480px;">
+            <canvas id="mapCanvas" class="map-canvas" width="1156" height="1351"></canvas>
+            <div class="player-sprite" id="player"></div>
+        </div>
+        
+        <!-- UI Panel -->
+        <div class="ui-panel">
+            <div class="title">🎮 Staten Island RPG Viewer</div>
+            
+            <div class="controls">
+                <div class="control-group">
+                    <label>Zoom Level</label>
+                    <input type="range" class="slider" id="zoomSlider" min="1" max="10" value="4" step="0.5">
+                    <span id="zoomValue">4x</span>
+                </div>
+                
+                <div class="control-group">
+                    <label>Viewport Size</label>
+                    <select id="viewportSize">
+                        <option value="240,160">Game Boy Advance (240×160)</option>
+                        <option value="256,224">SNES (256×224)</option>
+                        <option value="320,240">GBA Large (320×240)</option>
+                        <option value="640,480" selected>Modern 2D (640×480)</option>
+                        <option value="800,600">Large (800×600)</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <button onclick="centerOnStatenIsland()">🏝️ Center on Staten Island</button>
+                    <button onclick="showRandomLocation()">🎲 Random Location</button>
+                    <button onclick="toggleGrid()">📐 Toggle Grid</button>
+                </div>
+            </div>
+            
+            <div class="info-display">
+                <div class="stats">
+                    <div class="stat-item">
+                        <strong>Player X:</strong><br><span id="playerX">578</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Player Y:</strong><br><span id="playerY">675</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Tile:</strong><br><span id="currentTile">Land</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Real Coords:</strong><br><span id="realCoords">14.4, 16.9 km</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="minimap">
+                <canvas id="minimapCanvas" class="minimap-canvas" width="200" height="150"></canvas>
+                <div class="viewport-indicator" id="viewportIndicator"></div>
+            </div>
+            
+            <div class="legend">
+                <strong>🎨 Terrain Legend:</strong>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #1E3A8A;"></div>
+                    Ocean
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #3B82F6;"></div>
+                    Water
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #84CC16;"></div>
+                    Land
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #16A34A;"></div>
+                    Forest
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #6B7280;"></div>
+                    Road
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #DC2626;"></div>
+                    Building
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px; font-size: 9px; color: #888;">
+                <strong>Controls:</strong><br>
+                • Drag to pan<br>
+                • Click to move player<br>
+                • Scroll to zoom<br>
+                • Arrow keys to move player
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game state
+        let gameState = {
+            mapWidth: 1156,
+            mapHeight: 1351,
+            tileSize: 16,
+            zoom: 4,
+            cameraX: 0,
+            cameraY: 0,
+            playerX: 578, // Center of map
+            playerY: 675,
+            showGrid: false,
+            mapImage: null,
+            minimapImage: null
+        };
+        
+        // Get canvas elements
+        const mapCanvas = document.getElementById('mapCanvas');
+        const mapCtx = mapCanvas.getContext('2d');
+        const minimapCanvas = document.getElementById('minimapCanvas');
+        const minimapCtx = minimapCanvas.getContext('2d');
+        const viewport = document.getElementById('viewport');
+        const player = document.getElementById('player');
+        
+        // Terrain colors (matching the converter)
+        const terrainColors = {
+            0: '#1E3A8A', // ocean
+            1: '#3B82F6', // water
+            2: '#84CC16', // land
+            3: '#16A34A', // forest
+            4: '#A3A3A3', // mountain
+            5: '#6B7280', // road
+            6: '#DC2626', // building
+            7: '#FEF3C7'  // beach
+        };
+        
+        const terrainNames = {
+            0: 'Ocean', 1: 'Water', 2: 'Land', 3: 'Forest',
+            4: 'Mountain', 5: 'Road', 6: 'Building', 7: 'Beach'
+        };
+        
+        // Initialize the game
+        async function initGame() {
+            console.log('🎮 Initializing Staten Island RPG Viewer...');
+            
+            // Try to load the actual map image
+            try {
+                const img = new Image();
+                img.onload = () => {
+                    gameState.mapImage = img;
+                    console.log('✅ Map image loaded');
+                    render();
+                };
+                img.onerror = () => {
+                    console.log('⚠️ Map image not found, using procedural generation');
+                    generateMapData();
+                    render();
+                };
+                img.src = 'staten_island_pokemon_preview.png';
+            } catch (e) {
+                console.log('⚠️ Fallback to procedural generation');
+                generateMapData();
+                render();
+            }
+            
+            setupEventListeners();
+            updateUI();
+        }
+        
+        function generateMapData() {
+            // Generate a sample map that resembles Staten Island
+            const canvas = document.createElement('canvas');
+            canvas.width = gameState.mapWidth;
+            canvas.height = gameState.mapHeight;
+            const ctx = canvas.getContext('2d');
+            
+            // Create Staten Island-like shape
+            for (let y = 0; y < gameState.mapHeight; y++) {
+                for (let x = 0; x < gameState.mapWidth; x++) {
+                    let terrain = 0; // default ocean
+                    
+                    // Create island shape (rough approximation)
+                    const centerX = gameState.mapWidth * 0.6;
+                    const centerY = gameState.mapHeight * 0.5;
+                    const distance = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
+                    const islandRadius = Math.min(gameState.mapWidth, gameState.mapHeight) * 0.25;
+                    
+                    if (distance < islandRadius) {
+                        // Inside island
+                        const noise = Math.random();
+                        if (noise > 0.8) terrain = 6; // buildings
+                        else if (noise > 0.7) terrain = 3; // forest
+                        else if (noise > 0.6) terrain = 5; // road
+                        else terrain = 2; // land
+                    } else if (distance < islandRadius * 1.2) {
+                        // Coastline
+                        if (Math.random() > 0.5) terrain = 1; // water
+                        else terrain = 7; // beach
+                    }
+                    
+                    ctx.fillStyle = terrainColors[terrain];
+                    ctx.fillRect(x, y, 1, 1);
+                }
+            }
+            
+            gameState.mapImage = canvas;
+        }
+        
+        function render() {
+            // Clear canvas
+            mapCtx.imageSmoothingEnabled = false;
+            mapCtx.fillStyle = '#000000';
+            mapCtx.fillRect(0, 0, mapCanvas.width, mapCanvas.height);
+            
+            // Draw map
+            if (gameState.mapImage) {
+                const tileSize = gameState.tileSize * gameState.zoom;
+                
+                mapCtx.drawImage(
+                    gameState.mapImage,
+                    -gameState.cameraX * gameState.zoom,
+                    -gameState.cameraY * gameState.zoom,
+                    gameState.mapWidth * gameState.zoom,
+                    gameState.mapHeight * gameState.zoom
+                );
+            }
+            
+            // Draw grid if enabled
+            if (gameState.showGrid) {
+                drawGrid();
+            }
+            
+            // Update player position
+            updatePlayer();
+            
+            // Update minimap
+            updateMinimap();
+        }
+        
+        function drawGrid() {
+            const tileSize = gameState.tileSize * gameState.zoom;
+            mapCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            mapCtx.lineWidth = 1;
+            
+            // Vertical lines
+            for (let x = -gameState.cameraX % gameState.tileSize; x < viewport.clientWidth / gameState.zoom; x += gameState.tileSize) {
+                mapCtx.beginPath();
+                mapCtx.moveTo(x * gameState.zoom, 0);
+                mapCtx.lineTo(x * gameState.zoom, viewport.clientHeight);
+                mapCtx.stroke();
+            }
+            
+            // Horizontal lines
+            for (let y = -gameState.cameraY % gameState.tileSize; y < viewport.clientHeight / gameState.zoom; y += gameState.tileSize) {
+                mapCtx.beginPath();
+                mapCtx.moveTo(0, y * gameState.zoom);
+                mapCtx.lineTo(viewport.clientWidth, y * gameState.zoom);
+                mapCtx.stroke();
+            }
+        }
+        
+        function updatePlayer() {
+            const screenX = (gameState.playerX - gameState.cameraX) * gameState.zoom;
+            const screenY = (gameState.playerY - gameState.cameraY) * gameState.zoom;
+            
+            player.style.left = screenX + 'px';
+            player.style.top = screenY + 'px';
+            player.style.width = (gameState.tileSize * gameState.zoom) + 'px';
+            player.style.height = (gameState.tileSize * gameState.zoom) + 'px';
+        }
+        
+        function updateMinimap() {
+            if (!gameState.mapImage) return;
+            
+            // Clear minimap
+            minimapCtx.fillStyle = '#000000';
+            minimapCtx.fillRect(0, 0, minimapCanvas.width, minimapCanvas.height);
+            
+            // Draw scaled map
+            minimapCtx.drawImage(
+                gameState.mapImage,
+                0, 0, gameState.mapWidth, gameState.mapHeight,
+                0, 0, minimapCanvas.width, minimapCanvas.height
+            );
+            
+            // Draw player dot
+            const minimapPlayerX = (gameState.playerX / gameState.mapWidth) * minimapCanvas.width;
+            const minimapPlayerY = (gameState.playerY / gameState.mapHeight) * minimapCanvas.height;
+            
+            minimapCtx.fillStyle = '#FF6B6B';
+            minimapCtx.fillRect(minimapPlayerX - 1, minimapPlayerY - 1, 3, 3);
+            
+            // Update viewport indicator
+            const indicator = document.getElementById('viewportIndicator');
+            const viewWidth = (viewport.clientWidth / gameState.zoom / gameState.mapWidth) * minimapCanvas.width;
+            const viewHeight = (viewport.clientHeight / gameState.zoom / gameState.mapHeight) * minimapCanvas.height;
+            const viewX = (gameState.cameraX / gameState.mapWidth) * minimapCanvas.width;
+            const viewY = (gameState.cameraY / gameState.mapHeight) * minimapCanvas.height;
+            
+            indicator.style.left = viewX + 'px';
+            indicator.style.top = viewY + 'px';
+            indicator.style.width = viewWidth + 'px';
+            indicator.style.height = viewHeight + 'px';
+        }
+        
+        function updateUI() {
+            document.getElementById('playerX').textContent = Math.floor(gameState.playerX);
+            document.getElementById('playerY').textContent = Math.floor(gameState.playerY);
+            document.getElementById('zoomValue').textContent = gameState.zoom + 'x';
+            
+            // Calculate real world coordinates
+            const realX = (gameState.playerX / gameState.mapWidth) * 28.9;
+            const realY = (gameState.playerY / gameState.mapHeight) * 33.8;
+            document.getElementById('realCoords').textContent = `${realX.toFixed(1)}, ${realY.toFixed(1)} km`;
+            
+            // Mock current tile (would need actual tile data)
+            const tileTypes = ['Ocean', 'Water', 'Land', 'Forest', 'Road', 'Building'];
+            document.getElementById('currentTile').textContent = tileTypes[Math.floor(Math.random() * tileTypes.length)];
+        }
+        
+        function setupEventListeners() {
+            // Zoom slider
+            document.getElementById('zoomSlider').addEventListener('input', (e) => {
+                gameState.zoom = parseFloat(e.target.value);
+                render();
+                updateUI();
+            });
+            
+            // Viewport size selector
+            document.getElementById('viewportSize').addEventListener('change', (e) => {
+                const [width, height] = e.target.value.split(',').map(Number);
+                viewport.style.width = width + 'px';
+                viewport.style.height = height + 'px';
+                mapCanvas.width = width;
+                mapCanvas.height = height;
+                render();
+            });
+            
+            // Map dragging
+            let isDragging = false;
+            let lastX, lastY;
+            
+            viewport.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                lastX = e.clientX;
+                lastY = e.clientY;
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                
+                const deltaX = (e.clientX - lastX) / gameState.zoom;
+                const deltaY = (e.clientY - lastY) / gameState.zoom;
+                
+                gameState.cameraX = Math.max(0, Math.min(gameState.mapWidth - viewport.clientWidth / gameState.zoom, 
+                                                       gameState.cameraX - deltaX));
+                gameState.cameraY = Math.max(0, Math.min(gameState.mapHeight - viewport.clientHeight / gameState.zoom, 
+                                                       gameState.cameraY - deltaY));
+                
+                lastX = e.clientX;
+                lastY = e.clientY;
+                render();
+                updateUI();
+            });
+            
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+            
+            // Click to move player
+            viewport.addEventListener('click', (e) => {
+                if (isDragging) return;
+                
+                const rect = viewport.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / gameState.zoom + gameState.cameraX;
+                const y = (e.clientY - rect.top) / gameState.zoom + gameState.cameraY;
+                
+                gameState.playerX = Math.max(0, Math.min(gameState.mapWidth - 1, x));
+                gameState.playerY = Math.max(0, Math.min(gameState.mapHeight - 1, y));
+                
+                render();
+                updateUI();
+            });
+            
+            // Keyboard controls
+            document.addEventListener('keydown', (e) => {
+                const moveSpeed = 5;
+                
+                switch(e.key) {
+                    case 'ArrowUp':
+                    case 'w':
+                        gameState.playerY = Math.max(0, gameState.playerY - moveSpeed);
+                        break;
+                    case 'ArrowDown':
+                    case 's':
+                        gameState.playerY = Math.min(gameState.mapHeight - 1, gameState.playerY + moveSpeed);
+                        break;
+                    case 'ArrowLeft':
+                    case 'a':
+                        gameState.playerX = Math.max(0, gameState.playerX - moveSpeed);
+                        break;
+                    case 'ArrowRight':
+                    case 'd':
+                        gameState.playerX = Math.min(gameState.mapWidth - 1, gameState.playerX + moveSpeed);
+                        break;
+                }
+                
+                // Center camera on player
+                gameState.cameraX = Math.max(0, Math.min(gameState.mapWidth - viewport.clientWidth / gameState.zoom, 
+                                                       gameState.playerX - viewport.clientWidth / gameState.zoom / 2));
+                gameState.cameraY = Math.max(0, Math.min(gameState.mapHeight - viewport.clientHeight / gameState.zoom, 
+                                                       gameState.playerY - viewport.clientHeight / gameState.zoom / 2));
+                
+                render();
+                updateUI();
+            });
+        }
+        
+        // Utility functions
+        function centerOnStatenIsland() {
+            gameState.playerX = gameState.mapWidth * 0.6;
+            gameState.playerY = gameState.mapHeight * 0.5;
+            gameState.cameraX = gameState.playerX - viewport.clientWidth / gameState.zoom / 2;
+            gameState.cameraY = gameState.playerY - viewport.clientHeight / gameState.zoom / 2;
+            render();
+            updateUI();
+        }
+        
+        function showRandomLocation() {
+            gameState.playerX = Math.random() * gameState.mapWidth;
+            gameState.playerY = Math.random() * gameState.mapHeight;
+            gameState.cameraX = gameState.playerX - viewport.clientWidth / gameState.zoom / 2;
+            gameState.cameraY = gameState.playerY - viewport.clientHeight / gameState.zoom / 2;
+            render();
+            updateUI();
+        }
+        
+        function toggleGrid() {
+            gameState.showGrid = !gameState.showGrid;
+            render();
+        }
+        
+        // Initialize the game
+        document.addEventListener('DOMContentLoaded', initGame);
+        
+        console.log('🎮 Staten Island Pokémon-style RPG Viewer Ready!');
+        console.log('📍 Map size:', gameState.mapWidth, 'x', gameState.mapHeight, 'tiles');
+        console.log('🗺️ Real world: 28.9 x 33.8 km');
+        console.log('⚡ Use WASD or arrow keys to move, click to teleport');
+    </script>
+</body>
+</html>
