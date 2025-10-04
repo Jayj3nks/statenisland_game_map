@@ -1,266 +1,229 @@
-# 🎮 MASSIVE 2D STATEN ISLAND MAP
+# 🗺️ Staten Island Game Map
 
-> **Real-world Staten Island as a massive 2D game map with 39+ million cells**
+> **Massive 2D game-ready map of Staten Island with terrain classification and topographic elevation data**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![Game Ready](https://img.shields.io/badge/Game%20Ready-Unity%20|%20Godot%20|%20Custom-green.svg)](README.md)
+[![Game Ready](https://img.shields.io/badge/Game%20Ready-Unity%20|%20Godot%20|%20Custom-green.svg)](#game-engine-integration)
 
 ## 🚀 Quick Start
 
-**Important**: This repository uses compressed files to stay within GitHub's limits. Run this first:
-
+**1. Extract compressed files:**
 ```bash
-python3 decompress_files.py
+python3 decompress_topographic_files.py
 ```
 
-This will extract the compressed map data (~670MB total) for use in your game engine.
-
-## 📐 Map Specifications
-
-- **📏 Grid Size**: 5,783 × 6,757 cells (39,075,731 total)
-- **🌍 Real Size**: 28.9km × 33.8km (authentic Staten Island dimensions)
-- **🔍 Resolution**: 5 meters per cell (massive scale for exploration)
-- **🎨 Tiles**: 621 PNG tiles (256×256 cells each = 1.28km × 1.28km)
-- **📊 Total Area**: 976.9 km² of real-world geography
-
-## 🎨 Terrain Types & Colors
-
-| Terrain | Color | Hex | Coverage | Use Case |
-|---------|-------|-----|----------|----------|
-| 🌊 Ocean/Empty | Dark Blue | `#001133` | 45.3% | Ocean boundaries, empty space |
-| 💧 Water Bodies | Steel Blue | `#4682B4` | 35.7% | Rivers, bays, coastline |
-| 🏞️ Land Areas | Tan/Beige | `#D2B48C` | 9.9% | General terrain for buildings |
-| 🌳 Parks/Green | Forest Green | `#228B22` | 4.7% | Parks, forests, recreational areas |
-| 🏢 Buildings | Dark Gray | `#A9A9A9` | 3.5% | Residential, commercial structures |
-| 🛣️ Roads | Gray | `#707070` | 1.0% | Streets, highways, pathways |
-| 🛍️ Retail | Orange | `#FF8C00` | <0.1% | Shopping centers, commercial zones |
-
-## 📂 Repository Structure
-
-```
-📦 staten-island-map/
-├── 🗜️ game_tiles_compressed/           # Compressed large files
-│   ├── buildings.geojson.gz            # (12.7MB → 557MB when extracted)
-│   ├── tilemap.csv.gz                  # (1.0MB → 75MB when extracted)
-│   └── grid_uint8.npy.gz              # (0.8MB → 38MB when extracted)
-├── 🎮 game_tiles/                      # Ready-to-use game assets
-│   ├── metadata.json                   # Map configuration & bounds
-│   ├── road_network.json              # AI navigation graph (3MB)
-│   ├── map_viewer.html                 # Interactive map preview
-│   └── tiles/                          # 621 PNG tiles (256×256 each)
-├── 🗺️ staten_island_osm/              # OpenStreetMap source data
-│   ├── building_centroids.geojson     # Building center points (26MB)
-│   ├── landuse_green.geojson          # Parks & green spaces (24MB)
-│   ├── roads.geojson                   # Road network (8.3MB)
-│   ├── shops.geojson                   # Commercial locations (6.8MB)
-│   ├── water.geojson                   # Water bodies (2.3MB)
-│   └── shop_centroids.geojson         # Shop center points (393KB)
-├── 🐍 Python Scripts
-│   ├── decompress_files.py            # ⚡ EXTRACT COMPRESSED FILES FIRST
-│   ├── memory_efficient_tiles.py      # Map generation script
-│   └── Staten_island.py               # Data download script
-└── 📖 README.md                        # This file
-```
-
-## ⚡ Getting Started
-
-### 1. Clone & Extract
+**2. View your map:**
 ```bash
-git clone https://github.com/Jayj3nks/statenisland_game_map/tree/side2.0.git
-cd statenisland_game_map
-
-# IMPORTANT: Extract compressed files first!
-python3 decompress_files.py
+python3 -m http.server 8080
+# Open: http://localhost:8080/map_viewer.html
 ```
 
-### 2. Install Dependencies (for regeneration)
-```bash
-pip install geopandas rasterio pillow networkx shapely
+**3. For Unity development, use:**
+```
+/game_tiles_topographic/ folder
 ```
 
-### 3. View the Map
-```bash
-# Open map_viewer.html in your browser
-open game_tiles/map_viewer.html
+---
+
+## 📊 Map Specifications
+
+| Property | Value |
+|----------|--------|
+| **Grid Size** | 5,783 × 6,757 cells |
+| **Total Cells** | 39,075,731 |
+| **Real World Size** | 28.9km × 33.8km |
+| **Total Area** | 976.9 km² |
+| **Resolution** | 5 meters per cell |
+| **PNG Tiles** | 621 files (256×256 cells each) |
+| **Coordinate System** | EPSG:32618 (UTM Zone 18N) |
+
+---
+
+## 🎨 What You Get
+
+### **Unified Map System** 
+Your map combines **both** terrain classification AND topographic elevation:
+
+**7 Terrain Types:**
+- 🌊 Ocean/Empty (45.3%) - `#001133`
+- 💧 Water Bodies (35.7%) - `#4682B4` 
+- 🏞️ Land Areas (9.9%) - `#D2B48C` + elevation variations
+- 🌳 Parks/Green (4.7%) - `#228B22`
+- 🏢 Buildings (3.5%) - `#A9A9A9`
+- 🛣️ Roads (1.0%) - `#707070`
+- 🛍️ Retail (0.0%) - `#FF8C00`
+
+**Elevation Data:**
+- 76 real geographic data points
+- Height range: 0-45.7 meters
+- 5 elevation zones with visual color variations
+- Strategic gameplay advantages (high ground, line-of-sight)
+
+---
+
+## 📁 File Structure
+
+```
+staten-island-map/
+├── 🎯 game_tiles_topographic/     ← USE THIS FOR UNITY
+│   ├── metadata.json              ← Map configuration + elevation
+│   ├── tiles/                     ← 621 PNG files (terrain + elevation)
+│   └── road_network.json          ← AI pathfinding graph
+├── 🗺️ game_tiles/                ← Standard version (backup)
+│   ├── metadata.json
+│   ├── tiles/ 
+│   ├── grid_uint8.npy             ← Raw terrain data (37MB)
+│   └── tilemap.csv                ← Human-readable grid (75MB)
+├── 📊 staten_island_osm/          ← Source OpenStreetMap data
+│   └── buildings.geojson          ← 142,124 building polygons (557MB)
+├── 🖥️ map_viewer.html             ← Interactive map preview
+└── 📖 README.md                   ← This file
 ```
 
-## 🎮 Game Engine Integration
+---
 
-### 🔷 Unity
+## 🎮 Unity Integration
+
+### Basic Setup
 ```csharp
-// Load map metadata
-string json = File.ReadAllText("game_tiles/metadata.json");
+// Load unified map configuration
+string metadataPath = "game_tiles_topographic/metadata.json";
+string json = File.ReadAllText(metadataPath);
 MapConfig config = JsonUtility.FromJson<MapConfig>(json);
 
-// Stream tiles based on player position
+// Check elevation availability
+bool hasElevation = config.elevation.available; // true
+float maxHeight = config.elevation.range_meters[1]; // 45.7m
+```
+
+### Tile Streaming
+```csharp
+// Calculate tile coordinates from world position
 Vector2 playerPos = player.transform.position;
 int tileX = Mathf.FloorToInt(playerPos.x / (256 * 5f)); // 5m per cell
 int tileY = Mathf.FloorToInt(playerPos.y / (256 * 5f));
 
-// Load tile texture
-string tilePath = $"game_tiles/tiles/tile_{tileY:D3}_{tileX:D3}.png";
+// Load unified terrain + elevation tile
+string tilePath = $"game_tiles_topographic/tiles/topo_{tileY:D3}_{tileX:D3}.png";
+Texture2D unifiedTile = Resources.Load<Texture2D>(tilePath);
 ```
 
-### 🟢 Godot
-```gdscript
-# Load decompressed tilemap
-var file = File.new()
-file.open("game_tiles/tilemap.csv", File.READ)
-var map_data = file.get_as_text()
+### Gameplay Mechanics
+```csharp
+// Apply elevation-based tactical advantages
+if (IsOnHighGround(unit.position)) {
+    unit.damageMultiplier = 1.5f;    // 50% damage bonus
+    unit.visibilityRange *= 1.5f;    // Extended sight range
+}
 
-# Parse CSV grid (skip header comments)
-for line in map_data.split("\n"):
-    if not line.begins_with("#"):
-        var row_data = line.split(",")
-        # Each cell value represents terrain type (0-6)
+// Movement cost based on elevation change
+float heightDiff = GetElevationDiff(fromPos, toPos);
+float movementCost = 1.0f + (heightDiff * 0.1f); // 10% per meter uphill
 ```
-
-### 🔧 Custom Engine
-```python
-import numpy as np
-import json
-
-# Load the master grid (after decompression!)
-grid = np.load("game_tiles/grid_uint8.npy")  # Shape: (6757, 5783)
-
-# Load configuration
-with open("game_tiles/metadata.json") as f:
-    config = json.load(f)
-
-# Convert world coordinates to grid indices
-def world_to_grid(world_x, world_y):
-    cell_x = int((world_x - config["transform"]["xmin"]) / 5.0)
-    cell_y = int((config["transform"]["ymax"] - world_y) / 5.0)
-    return cell_x, cell_y
-
-# Get terrain at position
-terrain_type = grid[grid_y, grid_x]  # Returns 0-6
-```
-
-## 🤖 AI Navigation
-
-```python
-# Load road network for pathfinding
-import json
-with open("game_tiles/road_network.json") as f:
-    roads = json.load(f)
-
-# Contains 14,449 nodes and 19,544 edges
-# Perfect for A* pathfinding algorithms
-nodes = roads["nodes"]  # [{"id": 0, "x": 560799.0, "y": 4506875.0}, ...]
-edges = roads["edges"]  # [{"from": 0, "to": 1, "length": 25.3}, ...]
-```
-
-## 🚀 Performance Tips
-
-### 🔄 Tile Streaming System
-```python
-LOAD_RADIUS = 2  # Load 2 tiles around player
-
-def update_loaded_tiles(player_tile_x, player_tile_y):
-    for dy in range(-LOAD_RADIUS, LOAD_RADIUS + 1):
-        for dx in range(-LOAD_RADIUS, LOAD_RADIUS + 1):
-            tile_x = player_tile_x + dx  
-            tile_y = player_tile_y + dy
-            
-            if not is_tile_loaded(tile_x, tile_y):
-                load_tile_async(tile_x, tile_y)
-```
-
-### 🎯 Procedural Asset Placement
-```python
-# Place assets based on terrain type
-for y in range(height):
-    for x in range(width):
-        terrain = grid[y, x]
-        world_x, world_y = x * 5, y * 5  # Convert to world coordinates
-        
-        if terrain == 2:    # Parks - spawn trees
-            if random.random() < 0.15:
-                spawn_tree(world_x, world_y)
-        elif terrain == 4:  # Buildings - spawn structures  
-            spawn_building(world_x, world_y)
-        elif terrain == 1:  # Roads - spawn street items
-            if random.random() < 0.05:
-                spawn_street_light(world_x, world_y)
-```
-
-## 📊 Technical Details
-
-### File Sizes (After Decompression)
-- **grid_uint8.npy**: 38MB (master array)
-- **tilemap.csv**: 75MB (human-readable format)  
-- **buildings.geojson**: 557MB (detailed building data)
-- **PNG tiles**: ~3MB total (621 optimized images)
-
-### Coordinate System
-- **Projection**: EPSG:32618 (UTM Zone 18N)
-- **Origin**: (560,795m, 4,506,875m) in UTM coordinates
-- **Cell Resolution**: 5m × 5m per grid cell
-- **Tile Coverage**: 1.28km × 1.28km per PNG tile
-
-### Real-World Data Sources
-- **Buildings**: 142,124 structures from OpenStreetMap
-- **Roads**: 23,439 road segments with accurate geometry
-- **Parks**: 9,764 green spaces and recreational areas  
-- **Water**: 1,190 water bodies including full coastline
-- **Retail**: 2,270 commercial and shopping locations
-
-## 🔧 Regenerating the Map
-
-To recreate the map with different parameters:
-
-```bash
-# Download fresh OpenStreetMap data
-python3 Staten_island.py
-
-# Generate tiles with custom settings
-python3 memory_efficient_tiles.py
-
-# Compress large files for GitHub
-python3 -c "
-import gzip
-with open('game_tiles/tilemap.csv', 'rb') as f_in:
-    with gzip.open('game_tiles_compressed/tilemap.csv.gz', 'wb') as f_out:
-        f_out.writelines(f_in)
-"
-```
-
-## 🎮 Example Game Types
-
-- **🏎️ Racing Games**: Use real road network for authentic tracks
-- **🌍 Open World**: Massive explorable Staten Island environment
-- **⚔️ Strategy**: Large-scale tactical gameplay with realistic terrain
-- **🏗️ City Builder**: Expand on real urban planning data
-- **🎯 Survival**: Navigate realistic geography and landmarks
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b amazing-feature`)
-3. Make your changes
-4. Test with the decompression script
-5. Commit changes (`git commit -m 'Add amazing feature'`)
-6. Push to branch (`git push origin amazing-feature`)
-7. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-Map data © [OpenStreetMap](https://www.openstreetmap.org/) contributors, licensed under [ODbL](https://opendatacommons.org/licenses/odbl/).
-
-## ⭐ Acknowledgments
-
-- **OpenStreetMap Contributors**: For providing real-world geographic data
-- **Staten Island, NY**: For being an amazing island to map! 🗽
-- **Game Developers**: Who will bring this map to life in their projects
 
 ---
 
-### 🚀 Ready to Build Amazing Games?
+## 🖥️ Map Viewer
 
-This massive Staten Island map provides **39+ million cells** of authentic geographic data, perfect for creating immersive 2D games with realistic proportions and detailed terrain variety.
+**Interactive HTML viewer to preview your map:**
 
-**Don't forget to run `python3 decompress_files.py` first!** ⚡
+```bash
+# Start local server
+python3 -m http.server 8080
+
+# Open in browser
+http://localhost:8080/map_viewer.html
+```
+
+**Features:**
+- ✅ View complete 621-tile map grid
+- ✅ Switch between topographic and standard versions  
+- ✅ Zoom and pan functionality
+- ✅ Click tiles for detailed information
+- ✅ Real-time tile loading statistics
+
+**Keyboard Shortcuts:**
+- `1` - Topographic map (recommended)
+- `2` - Standard map  
+- `+/-` - Zoom in/out
+- `R` - Reload tiles
+
+---
+
+## ⚡ Performance Tips
+
+### For Unity Development:
+1. **Tile Streaming**: Load only 5-9 tiles around player (2-tile radius)
+2. **LOD System**: Use lower resolution for distant tiles  
+3. **Memory Management**: Unload tiles outside view distance
+4. **Async Loading**: Load tiles in background to prevent frame drops
+
+### File Sizes (After Decompression):
+- **Total map data**: ~860MB
+- **Runtime memory**: Load tiles on-demand
+- **Each tile**: 1.28km × 1.28km coverage
+
+---
+
+## 🎯 Game Types Supported
+
+### ✅ Perfect For:
+- **Strategy Games**: High ground tactical advantages
+- **Racing Games**: Real road network and elevation changes  
+- **Open World**: Massive explorable Staten Island environment
+- **Tactical RPGs**: Line-of-sight and movement cost mechanics
+- **City Builders**: Authentic urban planning constraints
+
+### 🚀 Advanced Features Available:
+- Height-based combat bonuses
+- Elevation-aware line-of-sight calculations
+- Realistic movement costs (uphill/downhill)
+- Artillery range modifications
+- Strategic positioning gameplay
+
+---
+
+## 🔧 Development Workflow
+
+### 1. Setup
+```bash
+# Extract compressed files
+python3 decompress_topographic_files.py
+
+# Preview your map
+python3 -m http.server 8080
+# Visit: http://localhost:8080/map_viewer.html
+```
+
+### 2. Unity Import
+1. Copy `/game_tiles_topographic/` to your Unity project
+2. Import 621 PNG tiles as Texture2D assets
+3. Parse `metadata.json` for world coordinates
+4. Implement tile streaming based on player position
+
+### 3. Add Gameplay
+1. Use terrain type data (0-6) for collision detection
+2. Implement elevation-based mechanics for strategy
+3. Use road network data for AI pathfinding
+
+---
+
+## 📄 License
+
+**Map Data**: © [OpenStreetMap](https://www.openstreetmap.org/) contributors, [ODbL License](https://opendatacommons.org/licenses/odbl/)  
+**Generated Content**: Available for game development use
+
+---
+
+## ✅ Ready for Production
+
+Your unified Staten Island map provides:
+- ✅ **39+ million cells** of authentic geographic data
+- ✅ **Terrain classification** for collision and gameplay mechanics  
+- ✅ **Topographic elevation** for strategic advantages
+- ✅ **Unity-ready tile system** with 621 optimized PNG files
+- ✅ **Complete metadata** with coordinate system specifications
+- ✅ **AI pathfinding** graph with 14,449 nodes
+
+**🎮 Start building your game with realistic Staten Island geography!**
