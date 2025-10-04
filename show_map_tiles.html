@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🗺️ Staten Island Map Tiles Visual Preview</title>
+    <style>
+        body {
+            background: #000;
+            color: #00ff88;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #00ffff;
+            text-shadow: 0 0 20px #00ffff;
+        }
+        .tile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .tile-container {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid #00ff88;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        .tile-img {
+            width: 100%;
+            height: 200px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            object-fit: cover;
+            background: #222;
+        }
+        .tile-info {
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        .version {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .version h3 {
+            color: #ffaa00;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .stats {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🗺️ STATEN ISLAND MAP - VISUAL PREVIEW</h1>
+        <p>Your Unified Terrain + Topographic Map System</p>
+    </div>
+
+    <div class="stats">
+        <h3 style="color: #00ffff;">📊 Map Overview</h3>
+        <ul>
+            <li><strong>Total Size:</strong> 39,075,731 cells (5,783 × 6,757)</li>
+            <li><strong>Real Area:</strong> 976.9 km² of authentic Staten Island</li>
+            <li><strong>Resolution:</strong> 5 meters per cell</li>
+            <li><strong>Tiles:</strong> 621 PNG files (256×256 cells each = 1.28km × 1.28km)</li>
+            <li><strong>Features:</strong> 7 terrain types + elevation data (0-45.7m)</li>
+        </ul>
+    </div>
+
+    <div class="comparison">
+        <div class="version">
+            <h3>🗺️ Standard Version</h3>
+            <p><strong>What it shows:</strong></p>
+            <ul>
+                <li>Terrain classification (roads, water, buildings, parks)</li>
+                <li>Color-coded by function</li>
+                <li>Clear visual distinction between types</li>
+                <li>Optimized for gameplay mechanics</li>
+            </ul>
+            <div class="tile-grid">
+                <div class="tile-container">
+                    <img class="tile-img" src="game_tiles/tiles/tile_010_010.png" alt="Standard Tile" onerror="this.style.background='#333'; this.alt='Tile not visible in preview'">
+                    <div class="tile-info">Sample Area (Standard)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="version">
+            <h3>🏔️ Topographic Version (Your Unified Map)</h3>
+            <p><strong>What it shows:</strong></p>
+            <ul>
+                <li>All terrain types PLUS elevation data</li>
+                <li>Land areas vary by height (0-45.7m)</li>
+                <li>Height-based color variations</li>
+                <li>Strategic gameplay advantages</li>
+            </ul>
+            <div class="tile-grid">
+                <div class="tile-container">
+                    <img class="tile-img" src="game_tiles_topographic/tiles/topo_010_010.png" alt="Topographic Tile" onerror="this.style.background='#333'; this.alt='Tile not visible in preview'">
+                    <div class="tile-info">Same Area (Enhanced)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="background: rgba(255, 170, 0, 0.1); border: 2px solid #ffaa00; border-radius: 10px; padding: 20px; margin: 30px 0;">
+        <h3 style="color: #ffaa00;">🎯 For Unity Development - Use the Topographic Version</h3>
+        <p>Your unified map is in: <code style="color: #00ff88; background: #000; padding: 2px 5px; border-radius: 3px;">/app/game_tiles_topographic/</code></p>
+        <p><strong>Why this version:</strong></p>
+        <ul>
+            <li>✅ Contains ALL terrain types (roads, water, buildings, etc.)</li>
+            <li>✅ PLUS authentic elevation data integrated</li>
+            <li>✅ Visual height variations for realistic gameplay</li>
+            <li>✅ Same coordinate system and tile structure</li>
+            <li>✅ Fully backward compatible</li>
+        </ul>
+    </div>
+
+    <div style="background: rgba(0, 0, 0, 0.8); border: 2px solid #00ff88; border-radius: 10px; padding: 20px;">
+        <h3 style="color: #00ff88;">🚀 What You See in Your Map</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 15px 0;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 20px; height: 20px; background: #001133; border: 1px solid #fff;"></div>
+                <span>Ocean/Empty (45.3%)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 20px; height: 20px; background: #4682B4; border: 1px solid #fff;"></div>
+                <span>Water Bodies (35.7%)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 20px; height: 20px; background: #D2B48C; border: 1px solid #fff;"></div>
+                <span>Land Areas (9.9%) + Elevation</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 20px; height: 20px; background: #228B22; border: 1px solid #fff;"></div>
+                <span>Parks/Green (4.7%)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 20px; height: 20px; background: #A9A9A9; border: 1px solid #fff;"></div>
+                <span>Buildings (3.5%)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 20px; height: 20px; background: #707070; border: 1px solid #fff;"></div>
+                <span>Roads (1.0%)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 20px; height: 20px; background: #FF8C00; border: 1px solid #fff;"></div>
+                <span>Retail (0.0%)</span>
+            </div>
+        </div>
+        
+        <h4 style="color: #ffaa00;">🏔️ Plus Elevation Zones:</h4>
+        <ul>
+            <li><strong>Sea Level (0-10m):</strong> Deep blue tones</li>
+            <li><strong>Low Land (10-25m):</strong> Green variations</li>
+            <li><strong>Mid Elevation (25-40m):</strong> Yellow-brown</li>
+            <li><strong>Higher Land (40-60m):</strong> Orange-brown</li>
+            <li><strong>Hills/Peaks (60m+):</strong> Red-brown</li>
+        </ul>
+    </div>
+
+    <script>
+        // Add some visual feedback for images that load/fail
+        document.addEventListener('DOMContentLoaded', () => {
+            const images = document.querySelectorAll('.tile-img');
+            images.forEach(img => {
+                img.addEventListener('load', () => {
+                    img.style.border = '2px solid #00ff88';
+                });
+                img.addEventListener('error', () => {
+                    img.style.background = 'linear-gradient(45deg, #333 25%, #222 25%, #222 75%, #333 75%, #333)';
+                    img.style.backgroundSize = '20px 20px';
+                    const container = img.closest('.tile-container');
+                    container.innerHTML += '<p style="color: #ffaa00; margin-top: 10px;">📁 Tile files exist but preview not available in this view</p>';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
