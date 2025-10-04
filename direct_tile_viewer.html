@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🗺 Direct Staten Island Tile Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow: auto;
+        }
+        
+        .header {
+            background: #1a1a1a;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header h1 {
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        select, button {
+            background: #333;
+            border: 1px solid #555;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        select:hover, button:hover {
+            background: #555;
+        }
+        
+        .tile-container {
+            position: relative;
+            margin: 20px auto;
+            border: 2px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #111;
+        }
+        
+        .tile-grid {
+            display: grid;
+            grid-template-columns: repeat(23, 1fr); /* 23 tiles wide */
+            gap: 1px;
+            background: #222;
+            padding: 10px;
+        }
+        
+        .tile {
+            width: 64px;
+            height: 64px;
+            background: #333;
+            border: 1px solid #444;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.2s;
+        }
+        
+        .tile:hover img {
+            transform: scale(1.1);
+        }
+        
+        .tile-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff88;
+            font-size: 8px;
+            text-align: center;
+            padding: 2px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .tile:hover .tile-info {
+            opacity: 1;
+        }
+        
+        .loading {
+            color: #666;
+            font-size: 10px;
+            text-align: center;
+            padding: 5px;
+        }
+        
+        .error {
+            background: #300;
+            color: #f66;
+        }
+        
+        .loaded {
+            border-color: #00ff88;
+        }
+        
+        .stats {
+            text-align: center;
+            margin: 20px;
+            color: #888;
+        }
+        
+        .zoom-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            z-index: 100;
+        }
+        
+        .zoom-btn {
+            background: #333;
+            border: 1px solid #555;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .zoom-btn:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🗺 Staten Island Map - Direct Tile View</h1>
+        <p>Viewing your 621 map tiles directly • Grid: 23×27 tiles • Total Area: 976.9 km²</p>
+        
+        <div class="controls">
+            <select id="mapVersion">
+                <option value="topographic">🏔️ Topographic (Enhanced)</option>
+                <option value="standard">🗺️ Standard</option>
+            </select>
+            <button onclick="reloadTiles()">🔄 Reload</button>
+            <button onclick="toggleSize()">📏 Size Toggle</button>
+        </div>
+    </div>
+    
+    <div class="tile-container">
+        <div id="tileGrid" class="tile-grid"></div>
+    </div>
+    
+    <div class="stats" id="stats">
+        Loading tiles...
+    </div>
+    
+    <div class="zoom-controls">
+        <div class="zoom-btn" onclick="changeSize(1)">+</div>
+        <div class="zoom-btn" onclick="changeSize(-1)">−</div>
+    </div>
+    
+    <script>
+        let currentVersion = 'topographic';
+        let tileSize = 64;
+        let loadedCount = 0;
+        let errorCount = 0;
+        const totalTiles = 621; // 23 x 27 = 621 tiles
+        
+        // Your actual tile grid dimensions
+        const GRID_WIDTH = 23;  // tiles horizontally (0-22)
+        const GRID_HEIGHT = 27; // tiles vertically (0-26)
+        
+        function createTileGrid() {
+            const grid = document.getElementById('tileGrid');
+            grid.innerHTML = '';
+            loadedCount = 0;
+            errorCount = 0;
+            
+            // Update grid columns based on current size
+            grid.style.gridTemplateColumns = `repeat(${GRID_WIDTH}, ${tileSize}px)`;
+            
+            for (let y = 0; y < GRID_HEIGHT; y++) {
+                for (let x = 0; x < GRID_WIDTH; x++) {
+                    createTile(x, y);
+                }
+            }
+            
+            updateStats();
+        }
+        
+        function createTile(x, y) {
+            const tile = document.createElement('div');
+            tile.className = 'tile';
+            tile.style.width = tileSize + 'px';
+            tile.style.height = tileSize + 'px';
+            
+            const img = document.createElement('img');
+            const info = document.createElement('div');
+            info.className = 'tile-info';
+            info.textContent = `${x},${y}`;
+            
+            // Format coordinates with leading zeros
+            const formattedX = String(x).padStart(3, '0');
+            const formattedY = String(y).padStart(3, '0');
+            
+            let tileUrl;
+            if (currentVersion === 'topographic') {
+                tileUrl = `game_tiles_topographic/tiles/topo_${formattedY}_${formattedX}.png`;
+            } else {
+                tileUrl = `game_tiles/tiles/tile_${formattedY}_${formattedX}.png`;
+            }
+            
+            img.onload = function() {
+                tile.classList.add('loaded');
+                loadedCount++;
+                updateStats();
+            };
+            
+            img.onerror = function() {
+                tile.classList.add('error');
+                tile.innerHTML = `<div class="loading">Missing<br>${x},${y}</div>`;
+                errorCount++;
+                updateStats();
+            };
+            
+            img.src = tileUrl;
+            img.title = `Tile (${x}, ${y}) - ${tileUrl}`;
+            
+            tile.appendChild(img);
+            tile.appendChild(info);
+            
+            // Add click handler for tile details
+            tile.onclick = function() {
+                alert(`Tile Information:
+X: ${x}, Y: ${y}
+URL: ${tileUrl}
+Status: ${tile.classList.contains('loaded') ? 'Loaded' : (tile.classList.contains('error') ? 'Error' : 'Loading')}
+Size: 256×256 cells (1.28km × 1.28km)
+Real coordinates: ${(x * 1.28).toFixed(2)}km × ${(y * 1.28).toFixed(2)}km`);
+            };
+            
+            document.getElementById('tileGrid').appendChild(tile);
+        }
+        
+        function updateStats() {
+            const stats = document.getElementById('stats');
+            const progress = ((loadedCount + errorCount) / totalTiles * 100).toFixed(1);
+            stats.innerHTML = `
+                📊 Progress: ${progress}% | 
+                ✅ Loaded: ${loadedCount} | 
+                ❌ Missing: ${errorCount} | 
+                📐 Total: ${totalTiles} tiles |
+                🗺️ Version: ${currentVersion}
+            `;
+        }
+        
+        function reloadTiles() {
+            createTileGrid();
+        }
+        
+        function changeSize(delta) {
+            tileSize += delta * 16;
+            if (tileSize < 32) tileSize = 32;
+            if (tileSize > 128) tileSize = 128;
+            createTileGrid();
+        }
+        
+        function toggleSize() {
+            tileSize = tileSize === 64 ? 128 : 64;
+            createTileGrid();
+        }
+        
+        // Map version selector
+        document.getElementById('mapVersion').addEventListener('change', function(e) {
+            currentVersion = e.target.value;
+            createTileGrid();
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'r':
+                case 'R':
+                    reloadTiles();
+                    break;
+                case '=':
+                case '+':
+                    changeSize(1);
+                    break;
+                case '-':
+                    changeSize(-1);
+                    break;
+                case '1':
+                    document.getElementById('mapVersion').value = 'topographic';
+                    currentVersion = 'topographic';
+                    createTileGrid();
+                    break;
+                case '2':
+                    document.getElementById('mapVersion').value = 'standard';
+                    currentVersion = 'standard';
+                    createTileGrid();
+                    break;
+            }
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🗺️ Direct Tile Viewer Initializing...');
+            console.log(`📐 Grid: ${GRID_WIDTH} × ${GRID_HEIGHT} = ${totalTiles} tiles`);
+            createTileGrid();
+        });
+    </script>
+</body>
+</html>
