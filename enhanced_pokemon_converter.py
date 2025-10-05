@@ -519,6 +519,70 @@ class EnhancedPokemonConverter:
         
         return neighbors
     
+    def _export_tmx_map(self, pokemon_grid, output_path):
+        """Export as TMX file format"""
+        print("📄 Exporting TMX map file...")
+        
+        # Simple TMX export - would need full implementation
+        tmx_content = '''<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="16" tileheight="16">
+  <tileset firstgid="1" name="pokemon_tileset" tilewidth="16" tileheight="16">
+    <image source="enhanced_pokemon_tileset.png" width="128" height="256"/>
+  </tileset>
+  <layer name="Terrain" width="100" height="100">
+    <data encoding="csv">
+'''
+        
+        # Add simplified tile data
+        for y in range(min(100, pokemon_grid.shape[0])):
+            row_data = []
+            for x in range(min(100, pokemon_grid.shape[1])):
+                row_data.append('1')  # Simplified - all grass for now
+            tmx_content += ','.join(row_data) + (',' if y < 99 else '') + '\n'
+        
+        tmx_content += '''    </data>
+  </layer>
+</map>'''
+        
+        tmx_path = output_path / 'enhanced_staten_island.tmx'
+        with open(tmx_path, 'w') as f:
+            f.write(tmx_content)
+        
+        print(f"✅ TMX file exported: {tmx_path}")
+    
+    def _create_enhanced_metadata(self, output_path):
+        """Create metadata for the enhanced map"""
+        
+        metadata = {
+            "name": "Enhanced Pokémon-Style Staten Island",
+            "version": "2.0-enhanced-pokemon",
+            "description": "Staten Island with authentic Pokémon Emerald-style 16×16 tiles",
+            "tile_specifications": {
+                "tile_size_pixels": 16,
+                "meters_per_tile": 1.0,
+                "character_height_tiles": 1,
+                "viewport_recommended": "240×160 or 320×240"
+            },
+            "visual_improvements": {
+                "authentic_colors": "Pokémon Emerald color palette",
+                "detailed_tiles": "Texture patterns and visual interest",
+                "building_structures": "Multi-tile buildings like Pokémon games",
+                "character_scale": "16×16 pixel sprites (1 tile tall)"
+            },
+            "engine_recommendations": {
+                "unity": "Use PixelPerfectCamera with 16 PPU",
+                "godot": "Use TileMap with 16×16 cell size",
+                "gamemaker": "Set room speed to 60, use sprite scaling",
+                "construct": "Use Tilemap object with 16×16 tiles"
+            }
+        }
+        
+        metadata_path = output_path / 'enhanced_metadata.json'
+        with open(metadata_path, 'w') as f:
+            json.dump(metadata, f, indent=2)
+        
+        print(f"✅ Enhanced metadata saved: {metadata_path}")
+    
     def export_enhanced_tileset(self, output_dir='game_ready_map_enhanced'):
         """Export the enhanced Pokémon-style assets"""
         
