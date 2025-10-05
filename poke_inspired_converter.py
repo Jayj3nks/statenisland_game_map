@@ -138,7 +138,7 @@ class PokeInspired2DConverter:
                 draw.point([x, y], fill=self.colors['water_light'])
         
         elif variant == 'sparkles':
-            # Water with sparkles (like Pokémon games)
+            # Water with sparkles (classic RPG style)
             for _ in range(4):
                 x, y = random.randint(2, 13), random.randint(2, 13)
                 # Draw + shaped sparkle
