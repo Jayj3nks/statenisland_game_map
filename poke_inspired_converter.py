@@ -413,12 +413,12 @@ class PokeInspired2DConverter:
         
         return rpg_grid
     
-    def _add_building_structures(self, pokemon_grid, original_grid):
+    def _add_building_structures(self, rpg_grid, original_grid):
         """Add multi-tile building structures"""
         # For now, return the grid as-is
         # This would implement logic to replace single building tiles
         # with multi-tile structures
-        return pokemon_grid
+        return rpg_grid
     
     def _create_sample_data(self):
         """Create sample Staten Island-like data for testing"""
