@@ -351,8 +351,8 @@ class PokeInspired2DConverter:
         
         return tile
     
-    def _create_pc_entrance(self, position):
-        """Create Pokémon Center entrance tiles"""
+    def _create_landmark_entrance(self, position):
+        """Create landmark building entrance tiles"""
         tile = Image.new('RGB', (16, 16), self.colors['pokecenter_white'])
         draw = ImageDraw.Draw(tile)
         
