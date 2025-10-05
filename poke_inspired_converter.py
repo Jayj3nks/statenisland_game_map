@@ -518,7 +518,7 @@ class PokeInspired2DConverter:
         
         return neighbors
     
-    def _export_tmx_map(self, pokemon_grid, output_path):
+    def _export_tmx_map(self, rpg_grid, output_path):
         """Export as TMX file format"""
         print("📄 Exporting TMX map file...")
         
