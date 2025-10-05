@@ -49,7 +49,7 @@ class PokeInspired2DConverter:
         self.tile_size = 16  # 16×16 pixels (classic 2D RPG standard)
         
     def create_2d_rpg_tileset(self):
-        """Create comprehensive Pokémon-style tileset"""
+        """Create comprehensive 2D RPG-style tileset"""
         
         tiles = {}
         
