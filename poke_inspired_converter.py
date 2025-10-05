@@ -643,7 +643,7 @@ class PokeInspired2DConverter:
             
             combined_tileset.paste(tile_image, (x, y))
         
-        tileset_path = output_path / 'enhanced_pokemon_tileset.png'
+        tileset_path = output_path / 'poke_inspired_tileset.png'
         combined_tileset.save(tileset_path)
         
         print(f"✅ Combined tileset saved: {tileset_path}")
