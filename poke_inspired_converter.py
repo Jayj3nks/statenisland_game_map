@@ -248,30 +248,30 @@ class PokeInspired2DConverter:
         
         return house_tiles
     
-    def create_pokecenter_structure(self):
-        """Create Pokémon Center building structure"""
-        pc_tiles = {}
+    def create_landmark_structure(self):
+        """Create landmark building structure (town hall, community center)"""
+        landmark_tiles = {}
         
-        # 4×3 Pokémon Center (larger building)
-        # Top row - roof with Pokéball sign
-        pc_tiles['pc_roof_left'] = self._create_pc_roof('left')
-        pc_tiles['pc_roof_sign'] = self._create_pc_roof('sign')  # Pokéball logo
-        pc_tiles['pc_roof_center'] = self._create_pc_roof('center')
-        pc_tiles['pc_roof_right'] = self._create_pc_roof('right')
+        # 4×3 landmark building (larger public building)
+        # Top row - roof with civic symbol
+        landmark_tiles['landmark_roof_left'] = self._create_landmark_roof('left')
+        landmark_tiles['landmark_roof_sign'] = self._create_landmark_roof('sign')  # Civic symbol
+        landmark_tiles['landmark_roof_center'] = self._create_landmark_roof('center')
+        landmark_tiles['landmark_roof_right'] = self._create_landmark_roof('right')
         
         # Middle row - walls
-        pc_tiles['pc_wall_left'] = self._create_pc_wall('left')
-        pc_tiles['pc_wall_center1'] = self._create_pc_wall('center')
-        pc_tiles['pc_wall_center2'] = self._create_pc_wall('center')
-        pc_tiles['pc_wall_right'] = self._create_pc_wall('right')
+        landmark_tiles['landmark_wall_left'] = self._create_landmark_wall('left')
+        landmark_tiles['landmark_wall_center1'] = self._create_landmark_wall('center')
+        landmark_tiles['landmark_wall_center2'] = self._create_landmark_wall('center')
+        landmark_tiles['landmark_wall_right'] = self._create_landmark_wall('right')
         
         # Bottom row - entrance
-        pc_tiles['pc_entrance_left'] = self._create_pc_entrance('left')
-        pc_tiles['pc_entrance_door'] = self._create_pc_entrance('door')
-        pc_tiles['pc_entrance_center'] = self._create_pc_entrance('center')
-        pc_tiles['pc_entrance_right'] = self._create_pc_entrance('right')
+        landmark_tiles['landmark_entrance_left'] = self._create_landmark_entrance('left')
+        landmark_tiles['landmark_entrance_door'] = self._create_landmark_entrance('door')
+        landmark_tiles['landmark_entrance_center'] = self._create_landmark_entrance('center')
+        landmark_tiles['landmark_entrance_right'] = self._create_landmark_entrance('right')
         
-        return pc_tiles
+        return landmark_tiles
     
     def create_shop_structure(self):
         """Create shop building structure"""
