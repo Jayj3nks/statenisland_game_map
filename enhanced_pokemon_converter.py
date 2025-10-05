@@ -414,6 +414,43 @@ class EnhancedPokemonConverter:
         
         return pokemon_grid
     
+    def _add_building_structures(self, pokemon_grid, original_grid):
+        """Add multi-tile building structures"""
+        # For now, return the grid as-is
+        # This would implement logic to replace single building tiles
+        # with multi-tile structures
+        return pokemon_grid
+    
+    def _create_sample_data(self):
+        """Create sample Staten Island-like data for testing"""
+        # Create a 100×100 sample grid
+        height, width = 100, 100
+        grid = np.zeros((height, width), dtype=np.uint8)
+        
+        # Create Staten Island-like shape
+        center_x, center_y = width // 2, height // 2
+        
+        for y in range(height):
+            for x in range(width):
+                # Distance from center for island shape
+                dist = np.sqrt((x - center_x)**2 + (y - center_y)**2)
+                
+                if dist < 30:  # Inside island
+                    if np.random.random() > 0.8:
+                        grid[y, x] = 4  # Buildings
+                    elif np.random.random() > 0.7:
+                        grid[y, x] = 2  # Parks
+                    elif np.random.random() > 0.6:
+                        grid[y, x] = 1  # Roads
+                    else:
+                        grid[y, x] = 6  # Land
+                elif dist < 35:  # Coastline
+                    grid[y, x] = 3 if np.random.random() > 0.5 else 6  # Water or land
+                else:
+                    grid[y, x] = 0  # Ocean
+        
+        return grid
+    
     def _convert_terrain_to_pokemon(self, grid_data):
         """Convert terrain IDs to Pokémon tile names"""
         
