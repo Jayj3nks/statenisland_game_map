@@ -582,8 +582,8 @@ class PokeInspired2DConverter:
         
         print(f"✅ Enhanced metadata saved: {metadata_path}")
     
-    def export_enhanced_tileset(self, output_dir='game_ready_map_enhanced'):
-        """Export the enhanced Pokémon-style assets"""
+    def export_2d_rpg_map(self, output_dir='poke_inspired_2d_map'):
+        """Export the enhanced 2D RPG-style assets"""
         
         output_path = Path(output_dir)
         output_path.mkdir(exist_ok=True)
