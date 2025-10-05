@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """
-🎮 Enhanced Pokémon Style Converter
-==================================
+🎮 Poke-Inspired 2D Map Converter
+=================================
 
-Converts Staten Island map data into authentic Pokémon-style tiles with proper
-scale, detail, and visual appeal to match your reference screenshots.
+Converts Staten Island map data into high-quality 2D RPG tiles with classic
+game visual style for open-world adventures.
 
-Key improvements:
-- Proper 16×16 pixel tiles with texture and detail
-- Character-to-tile scale matching Pokémon games
-- Building structures that span multiple tiles
+Features:
+- Professional 16×16 pixel tiles with texture and detail
+- Character-to-tile scale perfect for 2D RPG gameplay
+- Multi-tile building structures for authentic city feel
 - Terrain variations and visual interest
-- Authentic Pokémon color palette and patterns
+- Classic RPG color palette and visual patterns
 """
 
 import json
