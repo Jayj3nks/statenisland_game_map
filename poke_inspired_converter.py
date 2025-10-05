@@ -543,7 +543,7 @@ class PokeInspired2DConverter:
   </layer>
 </map>'''
         
-        tmx_path = output_path / 'enhanced_staten_island.tmx'
+        tmx_path = output_path / 'staten_island_2d_map.tmx'
         with open(tmx_path, 'w') as f:
             f.write(tmx_content)
         
