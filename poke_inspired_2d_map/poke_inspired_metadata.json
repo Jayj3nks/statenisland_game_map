@@ -1,7 +1,7 @@
 {
-  "name": "Enhanced Pok\u00e9mon-Style Staten Island",
+  "name": "Poke-Inspired Staten Island 2D Map",
   "version": "2.0-poke-inspired",
-  "description": "Staten Island with authentic Pok\u00e9mon Emerald-style 16\u00d716 tiles",
+  "description": "Staten Island with high-quality 2D RPG-style 16\u00d716 tiles",
   "tile_specifications": {
     "tile_size_pixels": 16,
     "meters_per_tile": 1.0,
@@ -9,9 +9,9 @@
     "viewport_recommended": "240\u00d7160 or 320\u00d7240"
   },
   "visual_improvements": {
-    "authentic_colors": "Pok\u00e9mon Emerald color palette",
+    "authentic_colors": "Classic 2D RPG color palette",
     "detailed_tiles": "Texture patterns and visual interest",
-    "building_structures": "Multi-tile buildings like Pok\u00e9mon games",
+    "building_structures": "Multi-tile buildings like classic RPGs",
     "character_scale": "16\u00d716 pixel sprites (1 tile tall)"
   },
   "engine_recommendations": {
