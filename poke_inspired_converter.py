@@ -588,10 +588,10 @@ class PokeInspired2DConverter:
         output_path = Path(output_dir)
         output_path.mkdir(exist_ok=True)
         
-        print(f"🎨 Creating enhanced Pokémon-style tileset...")
+        print(f"🎨 Creating enhanced 2D RPG-style tileset...")
         
         # Create tileset
-        tileset_dict = self.create_pokemon_tileset()
+        tileset_dict = self.create_2d_rpg_tileset()
         
         # Save individual tile images
         tiles_dir = output_path / 'tiles'
