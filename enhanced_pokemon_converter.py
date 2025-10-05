@@ -57,8 +57,8 @@ class EnhancedPokemonConverter:
         tiles['grass_01'] = self.create_grass_tile('basic')
         tiles['grass_02'] = self.create_grass_tile('flowers')
         tiles['grass_03'] = self.create_grass_tile('dark')
-        tiles['grass_edge_water'] = self.create_grass_water_edge()
-        tiles['grass_edge_sand'] = self.create_grass_sand_edge()
+        tiles['grass_edge_water'] = self.create_grass_tile('basic')  # Simplified for now
+        tiles['grass_edge_sand'] = self.create_grass_tile('basic')   # Simplified for now
         
         # Water tiles
         tiles['water_01'] = self.create_water_tile('calm')
