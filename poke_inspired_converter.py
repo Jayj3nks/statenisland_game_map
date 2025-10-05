@@ -472,9 +472,9 @@ class PokeInspired2DConverter:
                 
                 # Smart tile selection based on neighbors
                 tile_name = self._get_contextual_tile(grid_data, x, y, terrain_id, terrain_mapping)
-                pokemon_grid[y, x] = tile_name
+                rpg_grid[y, x] = tile_name
         
-        return pokemon_grid
+        return rpg_grid
     
     def _get_contextual_tile(self, grid_data, x, y, terrain_id, mapping):
         """Get appropriate tile based on surrounding context"""
