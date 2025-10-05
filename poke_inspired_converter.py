@@ -525,8 +525,8 @@ class PokeInspired2DConverter:
         # Simple TMX export - would need full implementation
         tmx_content = '''<?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="16" tileheight="16">
-  <tileset firstgid="1" name="pokemon_tileset" tilewidth="16" tileheight="16">
-    <image source="enhanced_pokemon_tileset.png" width="128" height="256"/>
+  <tileset firstgid="1" name="poke_inspired_tileset" tilewidth="16" tileheight="16">
+    <image source="poke_inspired_tileset.png" width="128" height="256"/>
   </tileset>
   <layer name="Terrain" width="100" height="100">
     <data encoding="csv">
