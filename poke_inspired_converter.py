@@ -93,7 +93,7 @@ class PokeInspired2DConverter:
         return tiles
     
     def create_grass_tile(self, variant='basic'):
-        """Create detailed grass tiles with Pokémon-style patterns"""
+        """Create detailed grass tiles with classic 2D RPG patterns"""
         tile = Image.new('RGB', (16, 16), self.colors['grass_base'])
         draw = ImageDraw.Draw(tile)
         
