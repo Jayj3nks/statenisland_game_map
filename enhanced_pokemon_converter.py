@@ -273,6 +273,18 @@ class EnhancedPokemonConverter:
         
         return pc_tiles
     
+    def create_shop_structure(self):
+        """Create shop building structure"""
+        shop_tiles = {}
+        
+        # Simple 2×2 shop structure
+        shop_tiles['shop_roof_left'] = self._create_shop_roof('left')
+        shop_tiles['shop_roof_right'] = self._create_shop_roof('right')
+        shop_tiles['shop_wall_left'] = self._create_shop_wall('left')
+        shop_tiles['shop_wall_right'] = self._create_shop_wall('right')
+        
+        return shop_tiles
+    
     def _create_roof_tile(self, position):
         """Create house roof tile sections"""
         tile = Image.new('RGB', (16, 16), self.colors['roof_red'])
