@@ -608,10 +608,10 @@ class PokeInspired2DConverter:
         
         # Convert Staten Island data
         print("🗺️ Converting Staten Island data...")
-        pokemon_grid = self.convert_staten_island_data()
+        rpg_grid = self.convert_staten_island_data()
         
         # Export as TMX
-        self._export_tmx_map(pokemon_grid, output_path)
+        self._export_tmx_map(rpg_grid, output_path)
         
         # Create metadata
         self._create_enhanced_metadata(output_path)
