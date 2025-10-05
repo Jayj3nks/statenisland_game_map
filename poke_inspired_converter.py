@@ -23,7 +23,7 @@ from pathlib import Path
 
 class PokeInspired2DConverter:
     def __init__(self):
-        # Pokémon Emerald authentic colors (from reference images)
+        # Classic 2D RPG colors (inspired by retro games)
         self.colors = {
             'grass_base': '#7CB518',      # Main grass color
             'grass_dark': '#5A9010',      # Dark grass accents
