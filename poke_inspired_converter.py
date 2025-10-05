@@ -235,7 +235,7 @@ class PokeInspired2DConverter:
         """Create multi-tile house structure (classic 2D RPG style)"""
         house_tiles = {}
         
-        # 3×2 house structure (typical Pokémon house)
+        # 3×2 house structure (typical 2D RPG house)
         # Row 1: Roof tiles
         house_tiles['house_roof_left'] = self._create_roof_tile('left')
         house_tiles['house_roof_center'] = self._create_roof_tile('center')  
