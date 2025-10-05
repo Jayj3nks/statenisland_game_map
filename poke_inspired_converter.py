@@ -616,7 +616,7 @@ class PokeInspired2DConverter:
         # Create metadata
         self._create_enhanced_metadata(output_path)
         
-        print(f"🎯 Enhanced Pokémon-style map exported to: {output_path}")
+        print(f"🎯 Enhanced 2D RPG-style map exported to: {output_path}")
         
         return output_path
     
