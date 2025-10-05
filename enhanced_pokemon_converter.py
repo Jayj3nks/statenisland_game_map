@@ -150,6 +150,66 @@ class EnhancedPokemonConverter:
         
         return tile
     
+    def create_ocean_tile(self):
+        """Create deep ocean tile"""
+        tile = Image.new('RGB', (16, 16), self.colors['ocean_base'])
+        draw = ImageDraw.Draw(tile)
+        
+        # Add subtle ocean texture
+        for _ in range(6):
+            x, y = random.randint(0, 15), random.randint(0, 15)
+            draw.point([x, y], fill='#2563EB')  # Slightly lighter blue
+        
+        return tile
+    
+    def create_sand_tile(self):
+        """Create sand/beach tile"""
+        tile = Image.new('RGB', (16, 16), self.colors['sand_base'])
+        draw = ImageDraw.Draw(tile)
+        
+        # Add sand texture
+        for _ in range(8):
+            x, y = random.randint(0, 15), random.randint(0, 15)
+            draw.point([x, y], fill='#E6D3A3')  # Darker sand
+        
+        for _ in range(4):
+            x, y = random.randint(0, 15), random.randint(0, 15)
+            draw.point([x, y], fill='#F7F3D0')  # Lighter sand
+        
+        return tile
+    
+    def create_path_tile(self):
+        """Create dirt path tile"""
+        tile = Image.new('RGB', (16, 16), self.colors['path_tan'])
+        draw = ImageDraw.Draw(tile)
+        
+        # Add path texture
+        for _ in range(10):
+            x, y = random.randint(0, 15), random.randint(0, 15)
+            draw.point([x, y], fill='#C19A6B')  # Darker tan
+        
+        return tile
+    
+    def create_tree_tile(self):
+        """Create tree tile"""
+        tile = Image.new('RGB', (16, 16), self.colors['grass_base'])
+        draw = ImageDraw.Draw(tile)
+        
+        # Add grass background first
+        self._add_grass_texture(draw)
+        
+        # Draw tree trunk
+        draw.rectangle([7, 10, 8, 15], fill=self.colors['tree_trunk'])
+        
+        # Draw leaves (circular)
+        draw.ellipse([4, 4, 11, 11], fill=self.colors['tree_leaves'])
+        
+        # Add leaf highlights
+        draw.point([6, 6], fill='#32CD32')  # Light green
+        draw.point([9, 8], fill='#32CD32')
+        
+        return tile
+    
     def create_road_tile(self, direction='horizontal'):
         """Create road tiles with proper markings"""
         tile = Image.new('RGB', (16, 16), self.colors['road_base'])
