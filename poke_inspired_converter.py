@@ -533,7 +533,7 @@ class PokeInspired2DConverter:
 '''
         
         # Add simplified tile data
-        for y in range(min(100, pokemon_grid.shape[0])):
+        for y in range(min(100, rpg_grid.shape[0])):
             row_data = []
             for x in range(min(100, pokemon_grid.shape[1])):
                 row_data.append('1')  # Simplified - all grass for now
