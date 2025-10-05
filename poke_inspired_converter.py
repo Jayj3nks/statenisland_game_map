@@ -576,7 +576,7 @@ class PokeInspired2DConverter:
             }
         }
         
-        metadata_path = output_path / 'enhanced_metadata.json'
+        metadata_path = output_path / 'poke_inspired_metadata.json'
         with open(metadata_path, 'w') as f:
             json.dump(metadata, f, indent=2)
         
