@@ -553,9 +553,9 @@ class PokeInspired2DConverter:
         """Create metadata for the enhanced map"""
         
         metadata = {
-            "name": "Enhanced Pokémon-Style Staten Island",
-            "version": "2.0-enhanced-pokemon",
-            "description": "Staten Island with authentic Pokémon Emerald-style 16×16 tiles",
+            "name": "Poke-Inspired Staten Island 2D Map",
+            "version": "2.0-poke-inspired",
+            "description": "Staten Island with high-quality 2D RPG-style 16×16 tiles",
             "tile_specifications": {
                 "tile_size_pixels": 16,
                 "meters_per_tile": 1.0,
