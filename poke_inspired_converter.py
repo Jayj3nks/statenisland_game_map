@@ -563,9 +563,9 @@ class PokeInspired2DConverter:
                 "viewport_recommended": "240×160 or 320×240"
             },
             "visual_improvements": {
-                "authentic_colors": "Pokémon Emerald color palette",
+                "authentic_colors": "Classic 2D RPG color palette",
                 "detailed_tiles": "Texture patterns and visual interest",
-                "building_structures": "Multi-tile buildings like Pokémon games",
+                "building_structures": "Multi-tile buildings like classic RPGs",
                 "character_scale": "16×16 pixel sprites (1 tile tall)"
             },
             "engine_recommendations": {
