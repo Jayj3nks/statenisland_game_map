@@ -1,20 +1,21 @@
-# 🚀 Staten Island Map - Quick Start
+# 🚀 Staten Island Maps - Quick Start
 
-## View Your Map (2 steps):
-1. `python3 -m http.server 8080`  
-2. Open: `http://localhost:8080/map_viewer.html`
+## 🎯 Choose Your Format:
+**Unity/3D Games**: `game_tiles_topographic/` (39M cells, elevation data)  
+**2D RPG Games**: `game_ready_map/` (1.5M tiles, Pokémon-style)
 
-## For Unity Development:
-- **Use folder**: `/game_tiles_topographic/`
-- **Tiles**: 621 PNG files (terrain + elevation)  
-- **Metadata**: `metadata.json` (coordinates & specs)
+## ⚡ 2-Step Setup:
+1. **Extract data**: `python3 decompress_topographic_files.py`
+2. **Preview maps**: `python3 -m http.server 8080`
 
-## Map Stats:
-- **Size**: 39M+ cells, 976.9 km², 28.9×33.8km
-- **Resolution**: 5m per cell  
-- **Features**: 7 terrain types + elevation (0-45.7m)
+## 🖥️ Viewers:
+- **Unity preview**: `http://localhost:8080/game_tiles/map_viewer.html`
+- **RPG preview**: `http://localhost:8080/game_ready_map/rpg_viewer.html`
 
-## Files You Need:
-- `map_viewer.html` ← Interactive preview
-- `game_tiles_topographic/` ← Unity development  
-- `README.md` ← Full documentation
+## 📊 What You Get:
+- **Area**: 976.9 km² of authentic Staten Island (28.9×33.8km)
+- **Features**: Roads, buildings, parks, water + elevation data
+- **Formats**: PNG tiles + TMX tilemap + metadata + viewers
+
+## 📖 Full Guide:
+See `README.md` for complete integration examples and documentation.
