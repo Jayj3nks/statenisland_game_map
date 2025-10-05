@@ -323,19 +323,18 @@ class PokeInspired2DConverter:
         
         return tile
     
-    def _create_pc_roof(self, position):
-        """Create Pokémon Center roof tiles"""
+    def _create_landmark_roof(self, position):
+        """Create landmark building roof tiles"""
         tile = Image.new('RGB', (16, 16), self.colors['pokecenter_red'])
         draw = ImageDraw.Draw(tile)
         
         if position == 'sign':
-            # Pokéball logo tile
-            # Draw Pokéball (simplified)
+            # Civic symbol tile (star or shield)
             center = (8, 8)
-            draw.ellipse([4, 4, 12, 12], fill='#FFFFFF')  # White ball
-            draw.ellipse([6, 4, 10, 8], fill='#FF0000')   # Red top
-            draw.line([4, 8, 12, 8], fill='#000000', width=2)  # Center line
-            draw.ellipse([7, 7, 9, 9], fill='#000000')   # Center button
+            # Draw a star symbol
+            points = [(8, 4), (9, 7), (12, 7), (10, 9), (11, 12), (8, 10), (5, 12), (6, 9), (4, 7), (7, 7)]
+            draw.polygon(points, fill='#FFD700')  # Gold star
+            draw.polygon(points, outline='#000000')  # Black outline
         
         return tile
     
