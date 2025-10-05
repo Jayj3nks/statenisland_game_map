@@ -46,7 +46,7 @@ class PokeInspired2DConverter:
             'path_tan': '#D2B48C'         # Dirt paths
         }
         
-        self.tile_size = 16  # 16×16 pixels (Pokémon standard)
+        self.tile_size = 16  # 16×16 pixels (classic 2D RPG standard)
         
     def create_pokemon_tileset(self):
         """Create comprehensive Pokémon-style tileset"""
