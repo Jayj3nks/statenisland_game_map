@@ -339,6 +339,59 @@ class EnhancedPokemonConverter:
         
         return tile
     
+    def _create_pc_wall(self, position):
+        """Create Pokémon Center wall tiles"""
+        tile = Image.new('RGB', (16, 16), self.colors['pokecenter_white'])
+        draw = ImageDraw.Draw(tile)
+        
+        if position != 'center':
+            # Add window
+            window_rect = [6, 6, 9, 9]
+            draw.rectangle(window_rect, fill=self.colors['window_blue'])
+            draw.rectangle([5, 5, 10, 10], outline='#654321')
+        
+        return tile
+    
+    def _create_pc_entrance(self, position):
+        """Create Pokémon Center entrance tiles"""
+        tile = Image.new('RGB', (16, 16), self.colors['pokecenter_white'])
+        draw = ImageDraw.Draw(tile)
+        
+        if position == 'door':
+            # Automatic door
+            door_rect = [4, 8, 11, 15]
+            draw.rectangle(door_rect, fill='#4169E1')  # Blue door
+        
+        return tile
+    
+    def _create_shop_roof(self, position):
+        """Create shop roof tiles"""
+        tile = Image.new('RGB', (16, 16), self.colors['shop_blue'])
+        draw = ImageDraw.Draw(tile)
+        
+        # Add roof pattern
+        for y in range(0, 16, 3):
+            draw.line([0, y, 15, y], fill='#003D82')  # Darker blue
+        
+        return tile
+    
+    def _create_shop_wall(self, position):
+        """Create shop wall tiles"""
+        tile = Image.new('RGB', (16, 16), '#E6E6E6')  # Light gray walls
+        draw = ImageDraw.Draw(tile)
+        
+        if position == 'left':
+            # Shop sign
+            sign_rect = [2, 6, 13, 10]
+            draw.rectangle(sign_rect, fill='#FFD700')  # Yellow sign
+            draw.rectangle(sign_rect, outline='#000000')
+        else:
+            # Window
+            window_rect = [6, 6, 9, 9] 
+            draw.rectangle(window_rect, fill=self.colors['window_blue'])
+        
+        return tile
+    
     def convert_staten_island_data(self):
         """Convert Staten Island data to Pokémon-style tile map"""
         
