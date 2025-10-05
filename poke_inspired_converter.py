@@ -338,8 +338,8 @@ class PokeInspired2DConverter:
         
         return tile
     
-    def _create_pc_wall(self, position):
-        """Create Pokémon Center wall tiles"""
+    def _create_landmark_wall(self, position):
+        """Create landmark building wall tiles"""
         tile = Image.new('RGB', (16, 16), self.colors['pokecenter_white'])
         draw = ImageDraw.Draw(tile)
         
