@@ -85,10 +85,10 @@ class EnhancedPokemonConverter:
         shop_tiles = self.create_shop_structure()
         tiles.update(shop_tiles)
         
-        # Nature tiles
+        # Nature tiles  
         tiles['tree_01'] = self.create_tree_tile()
-        tiles['bush_01'] = self.create_bush_tile()
-        tiles['flowers_01'] = self.create_flowers_tile()
+        tiles['bush_01'] = self.create_grass_tile('basic')    # Simplified for now
+        tiles['flowers_01'] = self.create_grass_tile('flowers')  # Simplified for now
         
         return tiles
     
