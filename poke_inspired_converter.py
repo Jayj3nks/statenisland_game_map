@@ -665,22 +665,22 @@ class PokeInspired2DConverter:
             draw.point([x, y], fill=self.colors['grass_light'])
 
 def main():
-    """Generate enhanced Pokémon-style Staten Island map"""
+    """Generate high-quality 2D RPG-style Staten Island map"""
     
-    print("🎮 ENHANCED POKÉMON STYLE CONVERTER")
+    print("🎮 POKE-INSPIRED 2D MAP CONVERTER")
     print("=" * 50)
     
-    converter = EnhancedPokemonConverter()
-    output_dir = converter.export_enhanced_tileset()
+    converter = PokeInspired2DConverter()
+    output_dir = converter.export_2d_rpg_map()
     
     print(f"\n🎉 SUCCESS!")
-    print(f"📁 Enhanced assets: {output_dir}")
+    print(f"📁 2D RPG assets: {output_dir}")
     print(f"🎨 Individual tiles: {output_dir}/tiles/")
-    print(f"🖼️  Combined tileset: {output_dir}/enhanced_pokemon_tileset.png")
+    print(f"🖼️  Combined tileset: {output_dir}/poke_inspired_tileset.png")
     print(f"📄 Tile mapping: {output_dir}/tile_mapping.json")
     
     print(f"\n🎮 NEXT STEPS:")
-    print(f"1. Import {output_dir}/enhanced_pokemon_tileset.png into your game engine")
+    print(f"1. Import {output_dir}/poke_inspired_tileset.png into your game engine")
     print(f"2. Set sprite size to 16×16 pixels")
     print(f"3. Configure pixel-perfect camera (240×160 or 320×240 viewport)")
     print(f"4. Set character sprite to 16×16 pixels")
