@@ -405,13 +405,13 @@ class PokeInspired2DConverter:
             # Create sample Staten Island-like data for testing
             grid_data = self._create_sample_data()
         
-        # Convert terrain IDs to Pokémon tile names
-        pokemon_grid = self._convert_terrain_to_pokemon(grid_data)
+        # Convert terrain IDs to 2D RPG tile names
+        rpg_grid = self._convert_terrain_to_2d_rpg(grid_data)
         
         # Generate building structures
-        pokemon_grid = self._add_building_structures(pokemon_grid, grid_data)
+        rpg_grid = self._add_building_structures(rpg_grid, grid_data)
         
-        return pokemon_grid
+        return rpg_grid
     
     def _add_building_structures(self, pokemon_grid, original_grid):
         """Add multi-tile building structures"""
