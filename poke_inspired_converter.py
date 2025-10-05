@@ -450,11 +450,11 @@ class PokeInspired2DConverter:
         
         return grid
     
-    def _convert_terrain_to_pokemon(self, grid_data):
-        """Convert terrain IDs to Pokémon tile names"""
+    def _convert_terrain_to_2d_rpg(self, grid_data):
+        """Convert terrain IDs to 2D RPG tile names"""
         
         height, width = grid_data.shape
-        pokemon_grid = np.empty((height, width), dtype=object)
+        rpg_grid = np.empty((height, width), dtype=object)
         
         terrain_mapping = {
             0: 'ocean_01',      # Ocean
