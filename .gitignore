@@ -27,3 +27,7 @@ staten_island_osm/buildings.geojson
 # Environment files
 *.env
 *.env.*
+-e 
+# Environment files
+*.env
+*.env.*
