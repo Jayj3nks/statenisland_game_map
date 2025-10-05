@@ -67,7 +67,7 @@ class EnhancedPokemonConverter:
         
         # Sand/Beach tiles
         tiles['sand_01'] = self.create_sand_tile()
-        tiles['sand_water_edge'] = self.create_sand_water_edge()
+        tiles['sand_water_edge'] = self.create_sand_tile()  # Simplified for now
         
         # Road/Path tiles
         tiles['road_horizontal'] = self.create_road_tile('horizontal')
