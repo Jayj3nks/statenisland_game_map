@@ -79,8 +79,8 @@ class PokeInspired2DConverter:
         house_tiles = self.create_house_structure()
         tiles.update(house_tiles)
         
-        pokecenter_tiles = self.create_pokecenter_structure()
-        tiles.update(pokecenter_tiles)
+        landmark_tiles = self.create_landmark_structure()
+        tiles.update(landmark_tiles)
         
         shop_tiles = self.create_shop_structure()
         tiles.update(shop_tiles)
