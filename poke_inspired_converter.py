@@ -21,7 +21,7 @@ import random
 import os
 from pathlib import Path
 
-class EnhancedPokemonConverter:
+class PokeInspired2DConverter:
     def __init__(self):
         # Pokémon Emerald authentic colors (from reference images)
         self.colors = {
