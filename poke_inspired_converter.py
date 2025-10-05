@@ -232,7 +232,7 @@ class PokeInspired2DConverter:
         return tile
     
     def create_house_structure(self):
-        """Create multi-tile house structure (like Pokémon)"""
+        """Create multi-tile house structure (classic 2D RPG style)"""
         house_tiles = {}
         
         # 3×2 house structure (typical Pokémon house)
