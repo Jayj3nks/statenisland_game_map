@@ -1,0 +1,19 @@
+{
+  "source": "USGS 3DEP one-meter bare-earth DEM, NY CMPG 2013",
+  "source_vertical_datum": "NAVD88",
+  "output_crs": "EPSG:32618",
+  "output_resolution_m": 5.0,
+  "bounds_m": [
+    562800.0,
+    4480940.0,
+    581715.0,
+    4500500.0
+  ],
+  "width_px": 3783,
+  "height_px": 3912,
+  "nodata": -9999.0,
+  "min_elevation_m": -15.27170181274414,
+  "max_elevation_m": 125.48762512207031,
+  "heightmap_min_elevation_m": 0.0,
+  "heightmap_encoding": "uint16 = round(clamp(elevation_m, 0, max_elevation_m) / max_elevation_m * 65535)"
+}
